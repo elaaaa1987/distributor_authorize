@@ -1,0 +1,55 @@
+<h1>Permissions for Distributor</h1>
+<p>
+INCLUDE: INDIA<br/>
+INCLUDE: UNITEDSTATES<br/>
+EXCLUDE: KARNATAKA-INDIA<br/>
+EXCLUDE: CHENNAI-TAMILNADU-INDIA<br/>
+</p>
+<h3>Check Permission for Distributors</h3>
+ <form name="distributor_permission_level_1" action="">
+<div class="row">
+	<div class="col-md-2">
+	  <div class="form-group">
+	    <label for="distributor">Distributor list:</label>
+		  <select class="form-control" name="distributor" id="distributor" required="true">
+		  <option value="">Select Distributor</option>
+		    <option value="distributor1">Distributor 1</option>
+		    <option value="distributor2">Distributor 2</option>
+		    <option value="distributor3">Distributor 3</option>
+		  </select>
+	  </div>
+	</div>
+	<div class="col-md-2">
+	  <div class="form-group">
+	    <label for="country">Country list:</label>
+		  <select class="form-control country" name="country1" id="country1" data-form-id="1" required="true">
+		  	<option value="" selected="selected">Select Country</option>
+		    <%= options_for_select(@country_list.keys)%>
+		  </select>
+	  </div>
+	</div>
+	<div class="col-md-2">
+	  <div class="form-group">
+	    <label for="state">State list:</label>
+		  <select class="form-control state" name="state1" id="state1" data-form-id="1">
+		  	<option value="">Select State</option>
+		  </select>
+	  </div>
+	</div>
+	<div class="col-md-2">
+	  <div class="form-group">
+	    <label for="state">City list:</label>
+		  <select class="form-control" name="city1" id="city1">
+		  	<option value="">Select City</option>
+		  </select>
+	  </div>
+	</div>
+	<div class="col-md-2">
+	  <div class="form-group">
+	      <br/>
+		  <button type="submit" class="btn btn-primary" id="disributor_level_1">Check Permission</button>
+	  </div>
+	</div>
+</div>
+  
+</form>

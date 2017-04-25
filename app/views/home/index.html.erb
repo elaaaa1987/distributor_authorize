@@ -1,0 +1,205 @@
+<%= render :partial => "permission_level_1"%>
+<%= render :partial => "permission_level_2"%>
+<%= render :partial => "permission_level_3"%>
+<script type="text/javascript">
+  var permissionLevelData = {
+	"distributor1": {
+		"include": {
+				"India": {
+					"states": [],
+					"cities": []
+				},
+				"United States": {
+					"states": [],
+					"cities": []
+				}
+		},
+		"exclude": {
+			"India": {
+				"states": ["Karnataka","Tamil Nadu"],
+				"cities": ["Chennai"]
+			}
+		},
+		"distributors" : {
+			"distributor2": {
+				"include": {
+						"India": {
+							"states": [],
+							"cities": []
+						},
+				},
+				"exclude": {
+					"India": {
+						"states": ["Karnataka","Tamil Nadu"],
+						"cities": []
+					}
+				},
+				"distributors" : {
+					"distributor3" : {
+						"include": {
+								"India": {
+									"states": ["Karnataka"],
+									"cities": ["Hubballi"]
+								},
+						},
+						"exclude": {
+						},
+						"distributors" : {
+							
+						}
+
+					}
+				}
+
+			}
+		}
+	}
+}
+  $(".country").change(function(){    
+    $.ajax({
+      url: "get_state_list?form_id="+$(this).attr("data-form-id")+"&country_name="+$(this).val(),
+      type: "GET",
+      success: function (data){
+      }
+      // Callbacks that will be explained
+    })
+  });
+  $(".state").change(function(){    
+    $.ajax({
+      url: "get_city_list?form_id="+$(this).attr("data-form-id")+"&country_name="+$("#country"+$(this).attr("data-form-id")).val()+"&province_name="+$
+      (this).val(),
+      type: "GET",
+      success: function (data){
+      }
+      // Callbacks that will be explained
+    })
+   });
+
+  $(function() {
+    $("#disributor_level_1").click(function(e) {
+    	e.preventDefault();
+    	checkDistrubutorPermission(1)
+      // validate and process form here
+    });
+
+    $("#disributor_level_2").click(function(e) {
+    	e.preventDefault();
+    	checkDistrubutorPermission(2)
+      // validate and process form here
+    });
+
+    $("#disributor_level_3").click(function(e) {
+    	e.preventDefault();
+    	checkDistrubutorPermission(3)
+      // validate and process form here
+    });
+  });
+
+  function checkDistrubutorPermission(levelId) {
+  		disributorPermissionData = permissionLevelData
+
+    	if(levelId == 2) {
+    	  var distributor = $("#distributor2").val();
+    	  disributorPermissionData = permissionLevelData["distributor1"]["distributors"];
+        } else if(levelId == 3) {
+    	  var distributor = $("#distributor3").val();
+    	  disributorPermissionData = permissionLevelData["distributor1"]["distributors"]["distributor2"]["distributors"];
+    	  console.log(JSON.stringify(disributorPermissionData));
+        } else {
+    	  var distributor = $("#distributor").val();
+        }
+    	var country = $("#country"+levelId.toString()).val();
+    	var city = $("#city"+levelId.toString()).val();
+    	var state = $("#state"+levelId.toString()).val();
+
+    	if(disributorPermissionData.hasOwnProperty(distributor)) {
+    		var dist_obj = disributorPermissionData[distributor];
+    		
+    		if(dist_obj.hasOwnProperty("exclude")) {
+    			var cate_exc_obj = dist_obj["exclude"]
+    			if(cate_exc_obj.hasOwnProperty(country)) {
+    				var exc_country_obj = cate_exc_obj[country]
+
+    						if(exc_country_obj["states"].length > 0) {
+    							if(state != "") {
+		    						if(exc_country_obj["states"].indexOf(state) >= 0){
+
+		    							if(exc_country_obj["cities"].length > 0) {
+		    								if(city != "") {
+			    								if(exc_country_obj["cities"].indexOf(city) >= 0) {
+			    									alert("NO")
+			    								} else {
+			    									alert("Yes")
+			    								}
+			    							} else {
+			    								alert("No")
+			    							}
+
+		    							} else {
+		    								alert("No")
+		    							}
+		    						} else {
+		    							
+		    							alert("Yes")
+		    							
+		    						}
+		    					} else {
+		    						alert("Yes")
+		    					}
+    						} else {
+    							alert("No")
+    						}
+
+    			} else {
+    				if(dist_obj.hasOwnProperty("include")){
+    					var cate_inc_obj = dist_obj["include"]
+    					if(cate_inc_obj.hasOwnProperty(country)) {
+    						var inc_country_obj = cate_inc_obj[country]
+
+    						if(inc_country_obj["states"].length > 0) {
+    							if(state != "") {
+		    						if(inc_country_obj["states"].indexOf(state) >= 0){
+
+		    							if(inc_country_obj["cities"].length > 0) {
+		    								if(city != "") {
+			    								if(inc_country_obj["cities"].indexOf(city) >= 0) {
+			    									alert("Yes")
+			    								} else {
+			    									alert("No")
+			    								}
+			    							} else {
+			    								alert("No")
+			    							}
+
+		    							} else {
+		    								alert("Yes")
+		    							}
+		    						} else {
+		    							alert("No")
+		    							
+		    						}
+		    					} else {
+		    						alert("No")
+		    					}
+    						} else {
+    							alert("Yes")
+    						}
+
+    					} else {
+    						alert("No")
+    					}
+    				} else {
+
+    				}
+
+    			}
+
+    		} else {
+    			alert("No")
+    		}
+
+    	} else {
+    		alert("No")
+    	}
+  }
+</script>
